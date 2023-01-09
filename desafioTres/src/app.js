@@ -57,14 +57,6 @@ class ProductManager {
     res.send({mensaje: "Bienvenidos a la ruta raíz"});
 }); */
 
-app.get('/queryP', (req, res) => {
-    queryP = req.query;
-    let {id, title, description, productN, price, code, stock} = req.query;
-    console.log(queryP);
-    res.send(id, title, description, productN, price, code, stock);
-});
-
-
 app.get('/products', async (req, res) => {   
         // Agregando límite, si no se agrega el límite trae todo los productos, de traer el límite trae la cantidad indicada.
         let limitValue = req.query.limit;
