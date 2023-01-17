@@ -81,61 +81,49 @@ class CartManager {
         /* let cartP = []; */
         let quantity = 1;
         try {
-            if(!data){
-                data={};
-                if(!idC){
-                    //Si está vacío carritos.json entra por acá
-                    //Si está vacío item, es porque no mandaron item. Se guarda el carrito sin productos.
-                    let idC = uuidv4();
-                    let varCart = { "id": idC, "product": []}
-                    data.push(varCart);
-                    console.log("Inicializando el archivo carritos.json. Carrito con ID y sin products")
+            let products = [];
+                // Ya existen otros carritos en el archivo carritos.json. Es decir, el archivo carritos.json no está vacío.
+                // Se crea otro carrito sin o con producto.
+                if(!(idC && idP)){
+                    // Se crea otro carrito sin producto
+                   let idC = uuidv4();
+                   let varCart = { "id": idC, "product": products}
+                   data.push(varCart);
+                   console.log("C")
                 }else{
-                    //Si está vacío carritos.json entra por acá
-                    //Si mandaron item se guarda en array products
-                /*  data = JSON.parse(data);
-                    item.id = data.length + 1;
-                    data.push(item); */
+                    // Se crea otro carrito con producto o se agrega o modifica otro producto
                     let product = {"id": idP, "quantity": 1};
-                    //let idC = uuidv4();
-                    let varCart = { "id": idC, "product": product}
-                    data.push(varCart);
-                    console.log("Carrito con ID y PRoducts")
-                }    
-            }else{
-                if(!idC){
-                    //Si está vacío carritos.json entra por acá
-                    //Si está vacío item, es porque no mandaron item. Se guarda el carrito sin productos.
-                    let idC = uuidv4();
-                    let varCart = { "id": idC, "product": []}
-                    data.push(varCart);
-                    console.log("Estoy acá!!!!");
-                }else{
-                    // Actualizo la cantidad del producto en el carrito
-                    let cIndex=data.findIndex((c => c.id === idC));
-                    let productsCart = data[cIndex];
-                    console.log(productsCart);
-                    console.log(productsCart.product);
-                    let addToCart = productsCart.product;
-                    if (cIndex !== -1){
-                        // Busco producto por Id y actualizo quantity.
-                        let pIndex=addToCart.findIndex((p => p.id === idP));
-                        if (pIndex !== -1){
-                            let copyProduct = [...data];
-                            copyProduct[pIndex] = {...copyProduct[pIndex], id: product.idP, quantity: product.quantity };
-                            data = copyProduct;
+                    let carrito = {};
+                        //Busco  el carrito por id
+                        carrito = data.find(carrito => carrito.id === idC);
+                        //saco el carrito del array data
+                        data = data.filter(carrito => carrito.id !== idC);
+                        let cartProducts=carrito.product;
+                        if(!carrito){
+                            //No existe el carrito, entonces se agrega
+                            products.push(product);
                         }else{
-                            let error = 'Error: El producto que intenta actualizar no existe'; 
-                            return error
-                        }
-                    }else{
-                        let error = 'Error: El carrito que intenta actualizar no existe'; 
-                        return error
-                    }
-                            console.log("Carrito con ID y PRoducts")
-                }    
-            }
-            
+                            //Existe el carrito, entonces verifico si el producto ya existe como producto dentro del carrito.Si existe aumento su quantity en 1.
+                            let findProduct = []; 
+                            findProduct = cartProducts.find(p=>p.id === idP);
+                            if(findProduct){
+                                //saco product del array products y actualizo quantity
+                                cartProducts = cartProducts.filter(p=> p.id !== idP);
+                                let quantityP=findProduct.quantity;
+                                let addProduct = quantityP + 1;
+                                product = {"id": idP, "quantity": addProduct};
+                                // Agrego a carrito de nuevo con los products y sus cantidades actualizadas
+                                cartProducts.push(product);
+                            }else{
+                                //Si no se consigue el producto entonces se agrega un nuevo producto en el mismo carrito encontrado.
+                                // Agrego a carrito
+                                cartProducts.push(product);
+                            }
+                        }        
+                    let varCart = { "id": idC, "product": cartProducts}
+                    data.push(varCart);
+                    console.log("D")
+                }         
             await fs.promises.writeFile(`./${this.path}.json`, JSON.stringify(data));
             return cart.idC;
         } catch(error) {
