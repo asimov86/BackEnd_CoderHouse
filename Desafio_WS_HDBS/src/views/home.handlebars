@@ -1,11 +1,4 @@
-<style>
-    .table td,
-    .table th {
-        vertical-align: middle;
-    }
-</style>
-
-{{#if productos.length}}
+{{#if product.length}}
 <h2>Menú</h2>
 <div class="table-responsive">
     <table class="table">
@@ -14,7 +7,7 @@
             <th>Price</th>
             <th>Image</th>
         </tr>
-        {{#each productos}}
+        {{#each product}}
         <tr>
             <td>{{this.title}}</td>
             <td>${{this.price}}</td>
