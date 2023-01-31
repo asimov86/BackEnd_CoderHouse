@@ -8,24 +8,29 @@
 {{#if product.length}}
 <h2>Menú</h2>
 <div class="table-responsive">
-    <table class="table">
-        <tr>
-            <th>Title</th>
-            <th>Price</th>
-            <th>Image</th>
-        </tr>
-        {{#each product}}
-        <tr>
-            <td>{{this.title}}</td>
-            <td>${{this.price}}</td>
-            <td><img width="100" src={{this.thumbnail}} alt="not found"></td>
-        </tr>
-        {{/each}}
-    </table>
+    {{!-- EDITADO  --}}
+    {{!-- // -------------------------------------------------------------------------------------------- --}}
+    {{!-- // -------------------------------------------------------------------------------------------- --}}
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">id</th>
+              <th scope="col">title</th>
+              <th scope="col">description</th>
+              <th scope="col">price</th>
+              <th scope="col">stock</th>
+            </tr>
+          </thead>
+            <tbody id="tabla">
+
+            </tbody>
+        </table>
+        {{!-- // -------------------------------------------------------------------------------------------- --}}
+        {{!-- // -------------------------------------------------------------------------------------------- --}}
 </div>
 {{else}}
 <h3>No hay productos</h3>
 {{/if}}
 <script src="js/main.js"></script>
-{{!-- <script src="./../public/js/main.js"></script>  Si agrego esta linea me aparece el listado pero no se actualiza.--}}
+{{!-- <script src="./../public/js/main.js"></script>  Si agrego esta linea me aparece el listado pero no se actualiza. --}}
     
