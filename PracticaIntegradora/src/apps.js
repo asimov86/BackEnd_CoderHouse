@@ -1,4 +1,4 @@
-import express from 'express';
+/* import express from 'express';
 import productsRouter from './routes/products.router.js';
 import cartsRouter from './routes/carts.router.js';
 import mongoose  from 'mongoose';
@@ -24,7 +24,58 @@ mongoose.connect('mongodb+srv://mongooseUser:MpMeleWU5BNrhOgg@mongoosecluster0.a
 
 
 app.use('/api/products', productsRouter);
-app.use('/api/carts', cartsRouter);
+app.use('/api/carts', cartsRouter); */
 
 
 ///////////
+
+
+import express from 'express';
+import productsRouter from './routes/products.router.js';
+import cartsRouter from './routes/carts.router.js';
+import mongoose  from 'mongoose';
+import __dirname from '../src/utils.js';
+import handlebars from 'express-handlebars';
+import viewRouter from './routes/view.router.js';
+import {Server} from 'socket.io';
+
+
+
+const app = express();
+app.engine('handlebars',handlebars.engine());
+app.set('views',__dirname+'/views');
+app.set('view engine','handlebars');
+app.use(express.json());
+app.use(express.urlencoded({ extended:true }));
+app.use(express.static(`${__dirname}/public`));
+
+
+const port = 8080;
+const httpServer = app.listen(port, ()=>console.log('Listening on port ' + port));
+const io= new Server(httpServer);
+
+
+
+mongoose.connect('mongodb+srv://mongooseUser:MpMeleWU5BNrhOgg@mongoosecluster0.a4g1hor.mongodb.net/ecommerce?retryWrites=true&w=majority', (error) => {
+    if (error){
+        console.log("No hubo conexion " +error)
+        process.exit();
+    }
+})
+
+app.use('/',viewRouter);
+app.use('/api/products', productsRouter);
+app.use('/api/carts', cartsRouter);
+
+const messages=[];
+io.on('connection',socket=>{ // cambio 
+     console.log("Tenemos un cliente conectado");
+
+     socket.on('message', data=>{
+          messages.push(data)
+          io.emit('messageLogs',messages)
+      })
+      socket.on('authenticated',data=>{
+          socket.broadcast.emit('newUserConnected',data);
+      })
+})

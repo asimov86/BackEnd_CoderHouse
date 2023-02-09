@@ -32,9 +32,6 @@ export default class Carts{
 
     post = async(idC, idP) => {
         try{
-            console.log(idC);
-            console.log(idP); 
-
             // Busco que ambos existan, carrito y producto.
             // Busco el carrito
             // Busco el producto dentro de products en el carrito.
@@ -57,20 +54,29 @@ export default class Carts{
                 return res.status(404).json({error: true , message:'El producto no existe.'});
             }
             let cart = await cartModel.find({_id: idC});
-            console.log(cart.products);
+            let productsCart = cart[0].products;
+            // Esto debo mejorarlo con esto>
+            // https://es.stackoverflow.com/questions/511479/como-se-accede-a-un-array-de-objetos-en-javascript
+            console.log(productsCart);
             if (!cart) {
                 return res.status(404).json({error: true , message:'El carrito no existe.'});
             }else{
                 //Buscamos si el carrito tiene productos.
-                if(!cart.products){
+                if((productsCart).length===0){
                     console.log("Carrito vacio");
                     let carts = await cartModel.updateOne({_id: idC}, {$set:{products: {product: idP, quantity:1}}});
                     return carts
                 }else{
                     console.log("Carrito con productos");
                     let carts = await cartModel.updateOne({_id: idC, products: {$elemMatch: {product: {$eq:idP}}}}, {$inc:{"products.$.quantity":quantity}});
-                    return carts
-                }
+                    if(carts.matchedCount===0){
+                        let newProduct = [{ "product":idP, "quantity":quantity}]
+                        console.log("Producto nuevo, no se debe incrementar sino agregar.")
+                        let carts = await cartModel.updateOne({_id: idC}, {$push:{products:{$each:newProduct}}});
+                        return carts
+                    }
+                    return carts    
+                } 
             }
         }catch(error){
             console.log ("No se pudo agregar el producto al carrito " + error)
