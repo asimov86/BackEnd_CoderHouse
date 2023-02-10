@@ -38,6 +38,7 @@ import __dirname from '../src/utils.js';
 import handlebars from 'express-handlebars';
 import viewRouter from './routes/view.router.js';
 import {Server} from 'socket.io';
+import {MONGODB_URI} from './public/config.js';
 
 
 
@@ -56,7 +57,7 @@ const io= new Server(httpServer);
 
 
 
-mongoose.connect('mongodb+srv://mongooseUser:MpMeleWU5BNrhOgg@mongoosecluster0.a4g1hor.mongodb.net/ecommerce?retryWrites=true&w=majority', (error) => {
+mongoose.connect(MONGODB_URI, (error) => {
     if (error){
         console.log("No hubo conexion " +error)
         process.exit();

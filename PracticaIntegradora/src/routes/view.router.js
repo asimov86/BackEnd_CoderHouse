@@ -14,6 +14,7 @@ router.get('/', async (req,res)=>{
 
 router.post('/', async (req,res)=>{
     const item = req.body;
+    console.log(item);
     const mess =  await message.post(item);
     res.send({status:"success",payload:mess})
 })

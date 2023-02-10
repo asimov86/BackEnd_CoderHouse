@@ -6,7 +6,10 @@ const messageSchema= new mongoose.Schema({
         type:String,
         unique: true
     },
-    message:String
+    message:String,
+    fyh:{
+        type: Date
+    }
 })
 
 export const messageModel =mongoose.model(messageCollection,messageSchema);
