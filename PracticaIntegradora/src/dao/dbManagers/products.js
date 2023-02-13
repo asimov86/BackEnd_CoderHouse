@@ -14,14 +14,18 @@ export default class Products{
                 let products = await productModel.find();
                 return products
             }catch(error){
-                console.log ("No pude traer productos " + error)
+                console.log ("No se pudo traer los productos. " + error)
             }
     };
 
     get = async () => {
-        let idP = parseInt(req.params.pid);
-        const prod = await productModel.getById(idP);
-        return prod
+        try{
+            let idP = parseInt(req.params.pid);
+            const prod = await productModel.findById({_id:idP});
+            return prod
+        }catch{
+            console.log ("No se pudo traer el producto." + error)
+        } 
     };
 
     postProduct = async (item)=>{
@@ -42,30 +46,41 @@ export default class Products{
     }
 
     put = async (item, itemId) => {
-        let{title, description, category, price, status, thumbnail, code, stock} =item;
-        console.log(itemId);
-        let existProduct = await productModel.find({_id: itemId});
-        if(existProduct){
-            const prod = await productModel.updateOne(
-                {_id: itemId}, 
-                {$set:{
-                    title:title, 
-                    description:description, 
-                    category:category, 
-                    price:price, 
-                    status:status, 
-                    thumbnail:thumbnail, 
-                    code:code, 
-                    stock:stock}
-                }
-            );
-            return prod
+        try {
+            let{title, description, category, price, status, thumbnail, code, stock} =item;
+            console.log(itemId);
+            let existProduct = await productModel.find({_id: itemId});
+            if(existProduct){
+                const prod = await productModel.updateOne(
+                    {_id: itemId}, 
+                    {$set:{
+                        title:title, 
+                        description:description, 
+                        category:category, 
+                        price:price, 
+                        status:status, 
+                        thumbnail:thumbnail, 
+                        code:code, 
+                        stock:stock}
+                    }
+                );
+                return prod
         }   
+        } catch (error) {
+            console.log ("No se pudo insertar el producto. " + error)
+        }
+       
     }
 
     deleteById = async (itemId) => {
-        const prod = await productModel.deleteOne({_id:itemId});
-        return prod
+        try {
+            const prod = await productModel.deleteOne({_id:itemId});
+            return prod 
+        } catch (error) {
+            console.log ("No se pudo borrar el producto. " + error)
+        }
+        
+        
     };
 
 }

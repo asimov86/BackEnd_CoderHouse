@@ -64,7 +64,7 @@ mongoose.connect(MONGODB_URI, (error) => {
     }
 })
 
-app.use('/',viewRouter);
+app.use('/api/chats',viewRouter);
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);
 
@@ -73,8 +73,9 @@ io.on('connection',socket=>{ // cambio
      console.log("Tenemos un cliente conectado");
 
      socket.on('message', data=>{
-          messages.push(data)
-          io.emit('messageLogs',messages)
+          data.fyh = new Date().toLocaleString();
+          messages.push(data);
+          io.emit('messageLogs',messages);
       })
       socket.on('authenticated',data=>{
           socket.broadcast.emit('newUserConnected',data);
