@@ -13,35 +13,43 @@ const product = new ProductManager();
 ////////////////////////////
 
 router.get('/', async (req, res) => {   
-        // Agregando límite, si no se agrega el límite trae todo los productos, de traer el límite trae la cantidad indicada.
-        let limitValue = req.query.limit;
-        let page =req.query.page;
-        let category = req.query.query;
+    // Agregando límite, si no se agrega el límite trae todo los productos, de traer el límite trae la cantidad indicada.
+    let limitValue = req.query.limit;
+    let page =req.query.page;
+    let queryCustom = req.query.query;
+    
+    page = parseInt(page); 
+    if (!page|| page === "") {
+        page = 1;
+    }else{
         page = parseInt(page); 
-        if (!page) {
-            page = 1;
-        }else{
-            page = parseInt(page); 
-        }
-        if (!limitValue || limitValue === "") {
-            limitValue = 10;
-        }else{
-            limitValue = parseInt(limitValue); 
-        }
-        const prod = await product.getAll(page, limitValue, category);
-        const {docs,hasPrevPage,hasNextPage,nextPage,prevPage,totalPages,prevLink,nextLink} = prod;
-        const products = docs;
-        console.log( "hasPrevPage:" + hasPrevPage + ", hasNextPage:" + hasNextPage + ", nextPage:" + nextPage + ", prevPage:" + prevPage + ", totalPages:" + totalPages + ", prevLink:" + prevLink + ", nextLink:" + nextLink)
-        res.render('home',{
-            products,
-            hasPrevPage,
-            hasNextPage,
-            prevPage,
-            nextPage,
-            totalPages,
-            prevLink,
-            nextLink
-        });
+    }
+    if (!limitValue || limitValue === "") {
+        limitValue = 10;
+    }else{
+        limitValue = parseInt(limitValue); 
+    }
+    /* if (!queryCustom || queryCustom === "") {
+        queryCustom = "*";
+    } */
+    console.log(page);
+    console.log(limitValue);
+    console.log(queryCustom);
+    const prod = await product.getAll(page, limitValue);
+    const {docs,hasPrevPage,hasNextPage,nextPage,prevPage,totalPages,prevLink,nextLink} = prod;
+    const products = docs;
+    console.log( "hasPrevPage:" + hasPrevPage + ", hasNextPage:" + hasNextPage + ", nextPage:" + nextPage + ", prevPage:" + prevPage + ", totalPages:" + totalPages + ", prevLink:" + prevLink + ", nextLink:" + nextLink)
+    res.render('home',{
+        products,
+        hasPrevPage,
+        hasNextPage,
+        prevPage,
+        nextPage,
+        totalPages,
+        prevLink,
+        nextLink,
+        limitValue
+    });
 });
 
 router.get('/:pid', async (req, res) => {

@@ -18,10 +18,10 @@
 </div>
 <div>
         {{#if hasPrevPage}}
-        <a href="/api/products?page={{prevPage}}"><button>Anterior</button></a>
+        <a href="/api/products?page={{prevPage}}&limit={{limitValue}}"><button>Anterior</button></a>
         {{/if}}
         {{#if hasNextPage}}
-        <a href="/api/products?page={{nextPage}}"><button>Siguiente</button></a>
+        <a href="/api/products?page={{nextPage}}&limit={{limitValue}}"><button>Siguiente</button></a>
         {{/if}}
         
 </div>

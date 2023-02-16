@@ -9,14 +9,14 @@ export default class Products{
     constructor(){
         console.log("Trabajando con MongoDB")
     }
-    getAll = async (page, limitValue, category) => {   
-            try{
-                const {docs,hasPrevPage,hasNextPage,nextPage,prevPage,totalPages,prevLink,nextLink} = await productModel.paginate({category: category}, { limit:limitValue , page:page, lean:true});
-                // let products = await productModel.find();
-                return {docs,hasPrevPage,hasNextPage,nextPage,prevPage,totalPages,prevLink,nextLink}
-            }catch(error){
-                console.log ("No se pudo traer los productos. " + error)
-            }
+    getAll = async (page, limitValue) => {   
+        try{
+            const {docs,hasPrevPage,hasNextPage,nextPage,prevPage,totalPages,prevLink,nextLink} = await productModel.paginate({}, { limit:limitValue , page:page, lean:true});
+            // let products = await productModel.find();
+            return {docs,hasPrevPage,hasNextPage,nextPage,prevPage,totalPages,prevLink,nextLink}
+        }catch(error){
+            console.log ("No se pudo traer los productos. " + error)
+        }
     };
 
     getById = async (idP) => {
