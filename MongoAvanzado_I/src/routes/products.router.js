@@ -17,6 +17,7 @@ router.get('/', async (req, res) => {
     let limitValue = req.query.limit;
     let page =req.query.page;
     let queryCustom = req.query.query;
+    let sort = req.query.sort;
     
     page = parseInt(page); 
     if (!page|| page === "") {
@@ -29,13 +30,19 @@ router.get('/', async (req, res) => {
     }else{
         limitValue = parseInt(limitValue); 
     }
+    if (!sort || sort === "") {
+        sort='';
+    }else{
+        sort = parseInt(sort); 
+    }
     /* if (!queryCustom || queryCustom === "") {
         queryCustom = "*";
     } */
     console.log(page);
     console.log(limitValue);
     console.log(queryCustom);
-    const prod = await product.getAll(page, limitValue);
+    console.log(sort);
+    const prod = await product.getAll(page, limitValue,sort);
     const {docs,hasPrevPage,hasNextPage,nextPage,prevPage,totalPages,prevLink,nextLink} = prod;
     const products = docs;
     console.log( "hasPrevPage:" + hasPrevPage + ", hasNextPage:" + hasNextPage + ", nextPage:" + nextPage + ", prevPage:" + prevPage + ", totalPages:" + totalPages + ", prevLink:" + prevLink + ", nextLink:" + nextLink)

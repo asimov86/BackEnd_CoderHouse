@@ -9,9 +9,9 @@ export default class Products{
     constructor(){
         console.log("Trabajando con MongoDB")
     }
-    getAll = async (page, limitValue) => {   
+    getAll = async (page, limitValue, sort) => {   
         try{
-            const {docs,hasPrevPage,hasNextPage,nextPage,prevPage,totalPages,prevLink,nextLink} = await productModel.paginate({}, { limit:limitValue , page:page, lean:true});
+            const {docs,hasPrevPage,hasNextPage,nextPage,prevPage,totalPages,prevLink,nextLink} = await productModel.paginate({}, { limit:limitValue , page:page,  sort: { price: sort }, lean:true});
             // let products = await productModel.find();
             return {docs,hasPrevPage,hasNextPage,nextPage,prevPage,totalPages,prevLink,nextLink}
         }catch(error){
