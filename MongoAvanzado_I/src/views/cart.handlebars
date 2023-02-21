@@ -1,0 +1,30 @@
+{{#if cartP}}
+
+    <div class="" id="cart">
+        <h2>Lista de productos agregados al carrito.</h2>
+        <div class="table-responsive">
+            <table class="table">
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Price</th>
+                    <th>Image</th>
+                    <th></th>
+                </tr>
+                {{#each cartP}}
+                <tr>
+                    <td>{{this.product._id}}</td>
+                    <td>{{this.product.title}}</td>
+                    <td>${{this.product.price}}</td>
+                    <td><img width="100" src={{this.product.thumbnail}} alt="not found"></td>
+                    <td><a href="/api/carts/{{buyer}}/products/{{this._id}}"><button class="btn-group me-2" role="group" aria-label="First group">Eliminar</button></a></td>
+                </tr>
+                {{/each}}
+            </table>
+        </div>
+    </div>
+{{else}}
+    <div class="" id="cart">
+        <h3>No hay productos en el carrito.</h3>
+    </div>
+{{/if}}

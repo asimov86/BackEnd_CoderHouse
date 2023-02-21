@@ -14,40 +14,19 @@ const product = new ProductManager();
 
 router.get('/', async (req, res) => {   
     // Agregando límite, si no se agrega el límite trae todo los productos, de traer el límite trae la cantidad indicada.
-    let limitValue = req.query.limit;
-    let page =req.query.page;
-    let queryCustom = req.query.query;
-    let sort = req.query.sort;
-    
-    page = parseInt(page); 
-    if (!page|| page === "") {
-        page = 1;
+    let limitValue = parseInt(req.query.limit, 10) || 10;
+    let page = parseInt(req.query.page, 10) || 1;
+    let customQuery = req.query.query;
+    if(!customQuery){
+        customQuery = '';
     }else{
-        page = parseInt(page); 
+        customQuery = customQuery.toLowerCase();
     }
-    if (!limitValue || limitValue === "") {
-        limitValue = 10;
-    }else{
-        limitValue = parseInt(limitValue); 
-    }
-    if (!sort || sort === "") {
-        sort='';
-    }else{
-        sort = parseInt(sort); 
-    }
-    /* if (!queryCustom || queryCustom === "") {
-        queryCustom = "*";
-    } */
-    console.log(page);
-    console.log(limitValue);
-    console.log(queryCustom);
-    console.log(sort);
-    const prod = await product.getAll(page, limitValue,sort);
+    let sort = parseInt(req.query.sort) || '';
+    const prod = await product.getAll(page, limitValue,sort, customQuery);
     const {docs,hasPrevPage,hasNextPage,nextPage,prevPage,totalPages,prevLink,nextLink} = prod;
-    const products = docs;
-    console.log( "hasPrevPage:" + hasPrevPage + ", hasNextPage:" + hasNextPage + ", nextPage:" + nextPage + ", prevPage:" + prevPage + ", totalPages:" + totalPages + ", prevLink:" + prevLink + ", nextLink:" + nextLink)
-    res.render('home',{
-        products,
+    res.send({
+        products:docs,
         hasPrevPage,
         hasNextPage,
         prevPage,
@@ -55,7 +34,9 @@ router.get('/', async (req, res) => {
         totalPages,
         prevLink,
         nextLink,
-        limitValue
+        limitValue,
+        sort,
+        customQuery
     });
 });
 

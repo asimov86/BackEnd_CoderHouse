@@ -1,27 +1,66 @@
+{{!-- Carrito --}}
+{{!-- {{#if cartP}}
+
+    <div class="" id="cart">
+        <h2>Lista de productos agregados al carrito.</h2>
+        <div class="table-responsive">
+            <table class="table">
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Price</th>
+                    <th>Image</th>
+                </tr>
+                {{#each cartP}}
+                <tr>
+                    <td>{{this.product._id}}</td>
+                    <td>{{this.product.title}}</td>
+                    <td>${{this.product.price}}</td>
+                    <td><img width="100" src={{this.product.thumbnail}} alt="not found"></td>
+                    <td>${{this.product.price}}</td>
+                </tr>
+                {{/each}}
+            </table>
+        </div>
+    </div>
+{{else}}
+    <div class="" id="cart">
+        <h3>No hay productos en el carrito.</h3>
+    </div>
+{{/if}} --}}
+
+
+
+{{!-- Productos --}}
+
+{{!--  Para simular una sesión: const buyer = '63e301b02523ec6d5ca55cb0'; --}}
+
 {{#if products.length}}
-<h2>Menú</h2>
+<h2>Menú de productos</h2>
 <div class="table-responsive">
     <table class="table">
         <tr>
             <th>Title</th>
             <th>Price</th>
             <th>Image</th>
+            <th></th>
         </tr>
         {{#each products}}
         <tr>
             <td>{{this.title}}</td>
             <td>${{this.price}}</td>
             <td><img width="100" src={{this.thumbnail}} alt="not found"></td>
+            <td><a href="/api/carts/{{buyer}}/products/{{this._id}}"><button class="btn-group me-2" role="group" aria-label="First group">Agregar</button></a></td>
         </tr>
         {{/each}}
     </table>
 </div>
-<div>
+<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
         {{#if hasPrevPage}}
-        <a href="/api/products?page={{prevPage}}&limit={{limitValue}}"><button>Anterior</button></a>
+        <a href="/products?query={{customQuery}}&page={{prevPage}}&limit={{limitValue}}&sort={{sort}}"><button class="btn-group me-2" role="group" aria-label="First group">Anterior</button></a>
         {{/if}}
         {{#if hasNextPage}}
-        <a href="/api/products?page={{nextPage}}&limit={{limitValue}}"><button>Siguiente</button></a>
+        <a href="/products?query={{customQuery}}&page={{nextPage}}&limit={{limitValue}}&sort={{sort}}"><button class="btn-group me-2" role="group" aria-label="First group">Siguiente</button></a>
         {{/if}}
         
 </div>
@@ -30,7 +69,7 @@
 <h3>No hay productos</h3>
 {{/if}}
 
-
+{{!-- <script src="/js/home.js"></script> --}}
 
 
 

@@ -1,18 +1,23 @@
 import mongoose from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
-
+//import aggregatePaginate from  'mongoose-aggregate-paginate-v2';
 
 const productCollection = 'products';
 const productSchema= new mongoose.Schema({
     title:{
         type:String,
         unique: true,
-        index:true
     },
     description:String,
-    category:String,
+    category:{
+        type:String,
+        index:true
+    },
     price:Number,
-    status: Boolean,
+    status: {
+        type:Boolean,
+        index:true
+    },
     thumbnail:String,
     code:String,
     stock:Number

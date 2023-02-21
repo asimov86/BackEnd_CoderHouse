@@ -6,12 +6,15 @@ import { MONGODB_URI } from "./public/config.js";
 const enviroment = async () => {
     await mongoose.connect(MONGODB_URI);
     // Indexación
-   /*  let response = await productModel.find().explain('executionStats');
+      let response = await productModel.find().explain('executionStats');
     console.log(response);
-    let response1 = await productModel.find({title:"Papas fritas especiales"}).explain('executionStats');
-    console.log(response1); */
-    //
-    
+    let response1 = await productModel.find({category: 1}).explain('executionStats');
+    console.log(response1); 
+    // Crear index para category y status
+
+
+
+    // Para ampliar este tema leer: https://www.percona.com/blog/mongodb-investigate-queries-with-explain-index-usage-part-2/
     // Population 
     /* let cart = await cartModel.findOne({_id:"63ece13d2b8829f514cc6b96"});
     console.log(cart);
@@ -49,11 +52,11 @@ const enviroment = async () => {
     // Paginate
     /* let cart = await cartModel.paginate({limit: 10, nextPage: 2});
     console.log(cart); */
-    let carts = await cartModel.findOne({_id:"63e301b02523ec6d5ca55cb0"});
+    /* let carts = await cartModel.findOne({_id:"63e301b02523ec6d5ca55cb0"});
     console.log(carts);
 let idC = "63e301b02523ec6d5ca55cb0";
 let idP = "63e2c076a6c6dca3600e0487";
-console.log("_________________________________")
+console.log("_________________________________") */
     /* let cartEliminado = await cartModel.updateOne(
         {
             _id: idC,
@@ -84,8 +87,8 @@ console.log("_________________________________")
     carts = await cartModel.findOne({_id:"63e301b02523ec6d5ca55cb0"});
     console.log(carts); */
 
-    const prod = await productModel.paginate({ limit:10 , lean:true});
-    console.log(prod);
+    /* const prod = await productModel.paginate({ limit:10 , lean:true});
+    console.log(prod); */
 }
 
 enviroment();

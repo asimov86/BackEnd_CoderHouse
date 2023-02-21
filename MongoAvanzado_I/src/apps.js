@@ -28,7 +28,7 @@ mongoose.connect(MONGODB_URI, {
     useUnifiedTopology:true,
 })
 
-//app.use('/api/chats',viewRouter);
+app.use('/',viewRouter);
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);
 
@@ -44,4 +44,4 @@ io.on('connection',socket=>{ // cambio
       socket.on('authenticated',data=>{
           socket.broadcast.emit('newUserConnected',data);
       })
-}) */
+})  */

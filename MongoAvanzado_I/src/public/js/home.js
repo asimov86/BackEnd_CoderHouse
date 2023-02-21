@@ -1,5 +1,5 @@
-/* const socket=io();
-const chatBox= document.getElementById('chatBox');
+const socket=io();
+/* const chatBox= document.getElementById('chatBox');
 const chatURL = '/api/chats';
 Swal.fire({
      title:"Identificate : ",
@@ -57,4 +57,41 @@ socket.on('newUserConnected',data=>{
         title:`${data} se ha unido al chat`,
         icon:"success"
     })
-}) */
+})
+ */
+
+/////////////////
+
+const addProduct = document.getElementById('addProduct')
+addProduct.addEventListener('submit', e => {
+    e.preventDefault()
+    const producto = {
+        title: addProduct[0].value,
+        description: addProduct[1].value,
+        category: addProduct[1].value,
+        price: addProduct[1].value,
+        status: addProduct[1].value,
+        thumbnail: addProduct[1].value,
+        code: addProduct[2].value,
+        stock: addProduct[1].value
+    }
+    console.log(producto);
+    socket.emit('update', producto);
+    addProduct.reset()
+})
+
+socket.on('products', productos => {
+    makeHtmlTable(productos).then(html => {
+        document.getElementById('productos').innerHTML = html
+    })
+});
+
+function makeHtmlTable(productos) {
+    return fetch('views/tabla-productos.hbs')
+        .then(respuesta => respuesta.text())
+        .then(plantilla => {
+            const template = Handlebars.compile(plantilla);
+            const html = template({ productos })
+            return html
+        })
+}
