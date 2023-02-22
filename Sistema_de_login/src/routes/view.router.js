@@ -57,17 +57,24 @@ router.get('/register', (req, res) => {
     res.render('register');
 })
 
+
+
+
+// Renderiza el formulario, cuando desde el navegador colocamos http://localhost:8080/login
+    // Luego desde el form hay un script /js/login.js que captura el formulario y lo envía vía POST a /api/session/login.
+        // Desde sessions.router.js --> (api) /login se verifica si mail y password son correctos, de ser correctos debería renderizar a /products
+        // De qué manera hacerlo?
 router.get('/login', (req, res) => {
     res.render('login');
 })
 
 
-router.get('/logout', (req, res) => {
+/* router.get('/logout', (req, res) => {
     req.session.destroy(err => {
-        if(!err) res.send('Sesion cerrada.')
+        if(!err) res.render('login', {mensaje: 'Sesión cerrada.'})
         else res.send({status: "No pudo cerrar sesion", body:err});
     });
-})
+}) */
 
 
 router.get('/session', (req, res) => {

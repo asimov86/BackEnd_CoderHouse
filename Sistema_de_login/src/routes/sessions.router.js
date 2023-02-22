@@ -1,7 +1,9 @@
 import { Router } from "express";
 import userModel from "../dao/models/user.js";
+import ProductManager from '../dao/dbManagers/products.js';
 
 const router = Router();
+const product = new ProductManager();
 
 router.post('/register', async (req, res) => {
     const {first_name, last_name, email, age, password} = req.body;
@@ -29,17 +31,34 @@ router.post('/login', async (req, res) => {
     }
 
     const user = await userModel.findOne({email, password});
-    if(!user) {return res.status( 400 ).send({status: 'error', error: 'El usuario o la contraseña son invalidos.'});}
-
-    req.session.user = {
-        id: user._id,
-        email: user.email
+    if(!user) {
+        return res.status( 400 ).send({status: 'error', error: 'El usuario o la contraseña son invalidos.'});
+    }else{
+        req.session.user = {
+            id: user._id,
+            email: user.email
+        }
+        //req.redirect('/products');
+        //res.send({status:'Success', message:'Usuario logueado.'});
+        res.redirect(200, '/products');
     }
+/* 
+    let status = 'Success!';
+    let url = 'products'; */
 
-    res.send({status:'Success', message:'Usuario logueado.'});
-
+   
 
 
 });
+
+router.get('/logout', (req, res) => {
+    req.session.destroy(err => {
+        if(!err) {
+            res.render('login', {mensaje: 'Sesión cerrada.'})
+        }else{
+            res.send({status: "No pudo cerrar sesion", body:err});
+        } 
+    });
+})
 
 export default router;

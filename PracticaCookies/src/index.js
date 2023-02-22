@@ -59,7 +59,7 @@ app.get('/loginForm', (req, res) => {
     res.render('home');
 })
 
-app.get('/login',(req,res)=>{
+app.post('/login',(req,res)=>{
     try {
         let {username,password}=req.body
         console.log(username);
@@ -67,9 +67,10 @@ app.get('/login',(req,res)=>{
         if(username!=='admin' || password !=='admin'){
         return res.send('Login failed')
         }
-        req.session.user=username
-        res.session.admin=true
-        res.send("loguin success")
+        req.session.user=username;
+        req.session.admin=true;
+        //res.send("login success")
+        res.render('prueba')
     } catch (error) {
         console.log(error);
     }
