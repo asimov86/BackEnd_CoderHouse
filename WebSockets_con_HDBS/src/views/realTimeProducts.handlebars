@@ -1,0 +1,36 @@
+<div> Bienvenido, listado de productos con HDBS y WS. </div>
+<style>
+    .table td,
+    .table th {
+        vertical-align: middle;
+    }
+</style>
+
+    {{#if listExists}}
+    <div>
+        <table>
+            <tr>
+                <th>Title</th>
+                <th>Price</th>
+                <th>Image</th>
+            </tr>
+            {{#each product}}
+            <tr>
+                <td>{{this.title}}</td>
+                <td>${{this.price}}</td>
+                <td><img width="150" src={{this.thumbnail}}></td>
+            </tr>
+            {{/each}}
+        </table>
+    </div>
+    {{else}}
+    <h3>No hay productos</h3>
+    {{/if}}
+    <br>
+    <a href="/" type="button">Ingresar un Producto</a>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script> 
+    <script type="text/javascript" src="/js/realTimeProducts.js"></script> 
+    <script> 
+    const sockets=io.connect('http://localhost:8080/api/productsWS/', 
+    {forceNew:true});
+    </script>

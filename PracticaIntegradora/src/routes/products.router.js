@@ -27,7 +27,7 @@ router.get('/', async (req, res) => {
 router.get('/:pid', async (req, res) => {
     let idP = parseInt(req.params.pid);
     const prod = await product.getById(idP);
-    res.send({status: 200, body: prod});
+    res.send({status: "succes", body: prod});
 });
 
 router.post('/', async (req, res) => {

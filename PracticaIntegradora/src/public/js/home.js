@@ -31,7 +31,6 @@ chatBox.addEventListener('keyup',evt=>{
     if(evt.key==="Enter"){
         if(chatBox.value.trim().length>0){
             let fyh = new Date().toLocaleString();
-            console.log(fyh);
             socket.emit("message",{user:user,message:chatBox.value,fyh:fyh});
             fetch(chatURL, {
                 method: 'POST',

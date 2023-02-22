@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import fs from  'fs';
 import { v4 as uuidv4 } from 'uuid';
+import { cartModel } from '../models/cart.model.js';
+import { productModel } from '../models/product.model.js';
 const router  = Router();
 const carts = [];
 
@@ -9,27 +11,73 @@ const carts = [];
 ////////////////////////
 
 router.get('/:cid', async (req, res) => {
-    let idC = req.params.cid;
+    /* let idC = req.params.cid;
     console.log(idC);
     const car = await cart.getById(idC);
-    res.send({status: 200, body: car});
+    res.send({status: 200, body: car}); */
+    try{
+        let idC = req.params.cid;
+        console.log(idC);
+        let carts = await cartModel.find({_id:idC});
+        res.send({ result : "sucess" ,payload:carts})
+    }catch(error){
+        console.log ("No se pudo traer los carritos " + error)
+    }
 });
 
 router.post('/', async (req, res) => {
-    const car = await cart.postCarts();
-    res.send({status: 200, body: 'Carrito creado.'})
+    /* const car = await cart.postCarts();
+    res.send({status: 200, body: 'Carrito creado.'}) */
+    try{
+     let products = [];
+        let carts = await cartModel.create({products});
+        res.send({ result : "sucess" ,payload:carts});
+    }catch(error){
+        console.log ("No se pudo crear el carrito " + error)
+    }
+
 });
 
 router.post('/:cid/products/:pid', async (req, res) => {
-    let idC = req.params.cid;
-    let idP = req.params.pid;
-    console.log(idC);
-    console.log(idP);
+    
     /* const item = req.body; */
-    const car = await cart.postCarts(idC, idP);
-    res.send({status: 200, body: 'Producto \'' + car + '\' agregado.'})
-});
+    /* const car = await cart.postCarts(idC, idP);
+    res.send({status: 200, body: 'Producto con id: \'' + idP + '\' agregado.'}) */
+    try{
+        let idC = req.params.cid;
+        let idP = req.params.pid;
+        console.log(idC);
+        console.log(idP); 
 
+        // Busco que ambos existan, carrito y producto.
+        // Busco el carrito
+        // Busco el producto dentro de products en el carrito.
+        // Si existe le aumento la cantidad sino agrego el id del producto y la cantidad en 1.
+
+        let product = await productModel.find({_id:idP});
+        if (!product) {
+            return res.status(404).json({error: true , message:'El producto no existe.'});
+        }
+        let cart = await cartModel.find({_id: idC});
+        console.log(cart);
+        if (!cart) {
+            return res.status(404).json({error: true , message:'El carrito no existe.'});
+        }else{
+            //Buscamos si el carrito tiene productos.
+            if(!cart.products){
+                console.log("Carrito vacio")
+            }
+            let carts = await cartModel.updateOne({_id: idC}, {$set:{products: {product: idP, quantity:1}}});
+            
+            res.send({ result : "sucess" ,payload:carts});
+        }
+
+    }catch(error){
+        console.log ("No se pudo agregar el producto al carrito " + error)
+    }    
+
+});
+/* db.carts.updateOne({_id: ObjectId("63e257f4cae487e581d06f6f")}, {$set: { products: {product: 23263, quantity: 2} } } ) */
 //
 
 ////////////////////////

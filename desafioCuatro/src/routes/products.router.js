@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import fs from  'fs';
+import { productModel } from '../models/product.model.js';
 const router  = Router();
 const products = [];
 
@@ -9,14 +10,20 @@ const products = [];
 
 router.get('/', async (req, res) => {   
         // Agregando límite, si no se agrega el límite trae todo los productos, de traer el límite trae la cantidad indicada.
-        let limitValue = req.query.limit;
+        /* let limitValue = req.query.limit;
         if (!limitValue ) {
         }else{
             limitValue = parseInt(limitValue); 
         }
         const prod = await product.getAll();
         const prodLimit = prod.slice(0, limitValue);
-        res.send({products: prodLimit});
+        res.send({products: prodLimit}); */
+        try{
+            let products = await productModel.find()
+            res.send({ result : "sucess" ,payload:products})
+        }catch(error){
+            console.log ("No pude traer productos " + error)
+        }
 });
 
 router.get('/:pid', async (req, res) => {
@@ -25,11 +32,30 @@ router.get('/:pid', async (req, res) => {
     res.send({status: 200, body: prod});
 });
 
-router.post('/', async (req, res) => {
+/* router.post('/', async (req, res) => {
     const item = req.body;
     const prod = await product.postProduct(item);
     res.send({status: 200, body: 'Producto \'' + prod + '\' agregado.'})
-});
+}); */
+
+router.post ('/',async (req,res)=>{
+
+    let{title, description, category, price, status, thumbnail, code, stock} =req.body;
+    if (!title || !description || !category || !price || !status || !thumbnail || !code || !stock)
+     res.send ({status :"error" , error:" Info Incompleta"})
+
+    let result =await productModel.create({
+        title,
+        description,
+        category,
+        price,
+        status,
+        thumbnail,
+        code,
+        stock
+    })
+    res.send({status:"success",payload:result})
+})
 
 router.put('/:pid', async (req, res) => {
     let item = req.body;
