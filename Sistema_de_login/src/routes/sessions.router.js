@@ -34,21 +34,16 @@ router.post('/login', async (req, res) => {
     if(!user) {
         return res.status( 400 ).send({status: 'error', error: 'El usuario o la contraseña son invalidos.'});
     }else{
+        if (email === 'adminCoder@coder.com' && password === 'adminCod3r123') {
+            req.session.admin=true;
+        }
         req.session.user = {
             id: user._id,
             email: user.email
         }
-        //req.redirect('/products');
-        //res.send({status:'Success', message:'Usuario logueado.'});
+
         res.redirect(200, '/products');
     }
-/* 
-    let status = 'Success!';
-    let url = 'products'; */
-
-   
-
-
 });
 
 router.get('/logout', (req, res) => {
