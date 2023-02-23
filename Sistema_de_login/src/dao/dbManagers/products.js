@@ -1,7 +1,5 @@
-import { Router } from 'express';
-//import { Aggregate } from 'mongoose';
 import { productModel } from '../models/product.model.js';
-const router  = Router();
+
 
 ////////////////////////////
 /// Rutas para productos ///
@@ -26,7 +24,6 @@ export default class Products{
         } 
     };
 // Seguir investigando lo de la query con paginate
-
     // Ver este video https://www.youtube.com/watch?v=iwZ8X0ceyP8
     //https://www.youtube.com/watch?v=0T4GsMYnVN4
 
@@ -43,7 +40,7 @@ export default class Products{
         let{title, description, category, price, status, thumbnail, code, stock} =item;
         if (!title || !description || !category || !price || !status || !thumbnail || !code || !stock)
         res.send ({status :"error" , error:" Info Incompleta"})
-        // Convertir la categoría a minúscula.
+        // Convertir la categoría a minúscula. Así es posible buscar por categoría aunque se escriba con may, min o ambas.
         category = category.toLowerCase();
         let result =await productModel.create({
             title,

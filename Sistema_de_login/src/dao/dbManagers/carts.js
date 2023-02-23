@@ -1,7 +1,6 @@
-import { Router } from 'express';
 import { cartModel } from '../models/cart.model.js';
 import { productModel } from '../models/product.model.js';
-const router  = Router();
+
 
 ////////////////////////
 /// Rutas para carts ///
@@ -73,7 +72,6 @@ export default class Carts{
     putProduct = async(idC, items) => {
         try {
             let cart = await cartModel.find({_id:idC});
-            let productsCart = cart[0].products;
             if (!cart){
                 return res.status(404).json({error: true , message:'El carrito no existe.'});
             }else{
