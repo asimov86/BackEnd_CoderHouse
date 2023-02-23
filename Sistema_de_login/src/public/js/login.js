@@ -1,5 +1,4 @@
 const form = document.getElementById('loginForm');
-
 form.addEventListener('submit', evt => {
     evt.preventDefault();
     const data = new FormData(form);
@@ -10,9 +9,13 @@ form.addEventListener('submit', evt => {
         method: 'POST',
         body: JSON.stringify(obj),
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+        
         }
-    }) .then(result=>result.status)
-    .then(status=>console.log(status));
-
-})
+    }) .then(result=> result.status)
+    .then(status=>{
+        console.log(status);
+        location.assign("/products");
+      });
+    
+});

@@ -8,7 +8,7 @@ import viewRouter from './routes/view.router.js';
 import {MONGODB_URI} from './public/config.js';
 import MongoStore from 'connect-mongo';
 import sessionsRouter from './routes/sessions.router.js';
-import session from 'express-session';
+import session, { Cookie } from 'express-session';
 
 const app = express();
 const PORT= process.env.PORT || 8080;
@@ -44,7 +44,8 @@ app.use(session({
     }),
     secret: "secretCode", 
     resave: false, 
-    saveUninitialized: false
+    saveUninitialized: false,
+    cookie: { sameSite: 'strict' }
 }));
 
 
