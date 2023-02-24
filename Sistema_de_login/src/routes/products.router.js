@@ -25,6 +25,7 @@ router.get('/', async (req, res) => {
     let sort = parseInt(req.query.sort) || '';
     const prod = await product.getAll(page, limitValue,sort, customQuery);
     const {docs,hasPrevPage,hasNextPage,nextPage,prevPage,totalPages,prevLink,nextLink} = prod;
+    console.log(totalPages);
     res.send({
         products:docs,
         hasPrevPage,

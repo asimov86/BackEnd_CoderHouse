@@ -42,7 +42,7 @@
         {{/each}}
     </table>
 </div>
-<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+{{!-- <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
         {{#if hasPrevPage}}
         <a href="/products?query={{customQuery}}&page={{prevPage}}&limit={{limitValue}}&sort={{sort}}"><button class="btn-group me-2" role="group" aria-label="First group">Anterior</button></a>
         {{/if}}
@@ -50,7 +50,21 @@
         <a href="/products?query={{customQuery}}&page={{nextPage}}&limit={{limitValue}}&sort={{sort}}"><button class="btn-group me-2" role="group" aria-label="First group">Siguiente</button></a>
         {{/if}}
         
-</div>
+</div> --}}
+
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+    <li class="page-item">
+      <a class="page-link" {{#if hasPrevPage}} href="/products?query={{customQuery}}&page={{prevPage}}&limit={{limitValue}}&sort={{sort}}" {{/if}}>Anterior</a>
+    </li>
+    {{#each arr}}
+    <li class="page-item"><a class="page-link" href="/products?query={{customQuery}}&page={{this}}&limit={{limitValue}}&sort={{sort}}">{{this}}</a></li>
+    {{/each}}
+    <li class="page-item">
+      <a class="page-link" {{#if hasNextPage}} href="/products?query={{customQuery}}&page={{nextPage}}&limit={{limitValue}}&sort={{sort}}" {{/if}}>Siguiente</a> 
+    </li>
+  </ul>
+</nav>
 
 {{else}}
 <h3>No hay productos</h3>

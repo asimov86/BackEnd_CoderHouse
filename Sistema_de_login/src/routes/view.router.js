@@ -27,6 +27,14 @@ router.get('/products', authSession, async (req,res)=>{
 
         const prod = await product.getAll(page, limitValue, sort, customQuery);
         const {docs,hasPrevPage,hasNextPage,nextPage,prevPage,totalPages,prevLink,nextLink} = prod;
+
+        // Para la paginación
+        let arr = [];
+        for (let i = 0; i < totalPages; i++) {
+            arr[i]=i + 1;
+          }
+        //
+        console.log(arr);
         res.render( 'home', {
             products: docs,
             hasPrevPage,
@@ -42,7 +50,8 @@ router.get('/products', authSession, async (req,res)=>{
             email,
             name,
             age,
-            role
+            role,
+            arr
         });
 })
 
