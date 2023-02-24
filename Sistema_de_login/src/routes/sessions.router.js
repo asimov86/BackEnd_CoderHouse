@@ -1,9 +1,7 @@
 import { Router } from "express";
 import userModel from "../dao/models/user.model.js";
-import ProductManager from '../dao/dbManagers/products.js';
 
 const router = Router();
-const product = new ProductManager();
 
 router.post('/register', async (req, res) => {
     const {first_name, last_name, email, age, password} = req.body;

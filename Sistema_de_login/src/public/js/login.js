@@ -3,7 +3,6 @@ form.addEventListener('submit', evt => {
     evt.preventDefault();
     const data = new FormData(form);
     const obj = {};
-
     data.forEach((value,key)=>obj[key] = value);
     fetch('/api/session/login',{
         method: 'POST',
@@ -19,3 +18,7 @@ form.addEventListener('submit', evt => {
       });
     
 });
+
+function goToRegister() {
+    location.href = '/register';
+}
