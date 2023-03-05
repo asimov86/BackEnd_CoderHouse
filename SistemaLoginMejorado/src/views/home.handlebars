@@ -1,0 +1,76 @@
+<div >
+    <div>
+        {{!-- Mensaje de bienvenida a usuario de sesión --}}
+        <h2>Bienvenido {{name}}</h2>
+        <br>
+        <h3>Mail: {{email}}</h3>
+        <h3>Role: {{role}}</h3>
+        <h3>Age: {{age}}</h3>
+    </div>
+    <br>
+    <br>
+    {{!-- Boton de logout --}}
+    <div id="logoutButton" class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+        <button class="btn-group me-2" role="group" aria-label="First group" onclick="functionLogout()">Logout</button>
+    </div>
+    
+
+</div>
+
+
+{{!-- Productos --}}
+
+{{!--  Para simular una sesión: const buyer = '63e301b02523ec6d5ca55cb0'; --}}
+
+{{#if products.length}}
+<h2>Menú de productos</h2>
+<div class="table-responsive">
+    <table class="table">
+        <tr>
+            <th>Title</th>
+            <th>Price</th>
+            <th>Image</th>
+            <th></th>
+        </tr>
+        {{#each products}}
+        <tr>
+            <td>{{this.title}}</td>
+            <td>${{this.price}}</td>
+            <td><img width="100" src={{this.thumbnail}} alt="not found"></td>
+            <td><a href="/api/carts/{{buyer}}/products/{{this._id}}"><button class="btn-group me-2" role="group" aria-label="First group">Agregar</button></a></td>
+        </tr>
+        {{/each}}
+    </table>
+</div>
+{{!-- <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+        {{#if hasPrevPage}}
+        <a href="/products?query={{customQuery}}&page={{prevPage}}&limit={{limitValue}}&sort={{sort}}"><button class="btn-group me-2" role="group" aria-label="First group">Anterior</button></a>
+        {{/if}}
+        {{#if hasNextPage}}
+        <a href="/products?query={{customQuery}}&page={{nextPage}}&limit={{limitValue}}&sort={{sort}}"><button class="btn-group me-2" role="group" aria-label="First group">Siguiente</button></a>
+        {{/if}}
+        
+</div> --}}
+
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+    <li class="page-item">
+      <a class="page-link" {{#if hasPrevPage}} href="/products?query={{customQuery}}&page={{prevPage}}&limit={{limitValue}}&sort={{sort}}" {{/if}}>Anterior</a>
+    </li>
+    {{#each arr}}
+    <li class="page-item"><a class="page-link" href="/products?query={{customQuery}}&page={{this}}&limit={{limitValue}}&sort={{sort}}">{{this}}</a></li>
+    {{/each}}
+    <li class="page-item">
+      <a class="page-link" {{#if hasNextPage}} href="/products?query={{customQuery}}&page={{nextPage}}&limit={{limitValue}}&sort={{sort}}" {{/if}}>Siguiente</a> 
+    </li>
+  </ul>
+</nav>
+
+{{else}}
+<h3>No hay productos</h3>
+{{/if}}
+
+
+
+
+<script src="/js/logout.js"></script>
