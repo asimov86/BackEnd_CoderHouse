@@ -9,6 +9,8 @@ import {MONGODB_URI} from './public/js/config.js';
 import MongoStore from 'connect-mongo';
 import sessionsRouter from './routes/sessions.router.js';
 import session, { Cookie } from 'express-session';
+import passport from "passport";
+import initPassport from "./config/passport.config.js"
 
 const app = express();
 const PORT= process.env.PORT || 8080;
@@ -28,16 +30,12 @@ app.use(express.static(`${__dirname}/public`));
 
 
 // Conexión con MONGO
-mongoose.connect(MONGODB_URI, {
+/* mongoose.connect(MONGODB_URI, {
     useNewUrlParser:true,
     useUnifiedTopology:true,
-})
+}) */
 
 app.use(session({
-    // ttl
-    // retries
-    // patch
-    //store : new FileStorage({path:'./sessions', ttl:100, retries:0}), 
     store : MongoStore.create({
         mongoUrl: MONGODB_URI,
         mongoOptions: {useNewUrlParser: true, useUnifiedTopology: true},
@@ -50,9 +48,12 @@ app.use(session({
 }));
 
 
+initPassport();
+app.use(session({
+    secret:"SecretCoders"
+}));
 
-
-
+app.use(passport.initialize());
 app.use('/',viewRouter);
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);

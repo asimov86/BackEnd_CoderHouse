@@ -64,8 +64,11 @@ router.get('/carts/:cid', async (req, res) => {
         res.render('cart', {cartP: carP, idCart: idC});
 });
 
-router.get('/register', (req, res) => {
+/* router.get('/register', (req, res) => {
     res.render('register');
+}); */
+router.get('/', (req, res) => {
+    res.render('home');
 });
 // Renderiza el formulario, cuando desde el navegador colocamos http://localhost:8080/login
     // Luego desde el form hay un script /js/login.js que captura el formulario y lo envía vía POST a /api/session/login.

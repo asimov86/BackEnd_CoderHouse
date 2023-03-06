@@ -1,6 +1,7 @@
 import { Router } from "express";
 import userModel from "../dao/models/user.model.js";
 import { createHash, isValidPassword } from "../utils.js";
+import passport from "passport";
 
 const router = Router();
 
@@ -28,7 +29,16 @@ router.post('/register', async (req, res) => {
 
 });
 
-router.post('/login', async (req, res) => {
+
+router.get('/github', passport.authenticate('github', {scope: ['user:email']}, async(req, res)=>{}));
+
+router.get('/', passport.authenticate('github', {failureRedirect: '/login'}, async(req, res)=>{
+    req.session.user = req.user, 
+    res.redirect('/');
+}));
+
+
+/* router.post('/login', async (req, res) => {
     const { email, password} = req.body;
     if (!email || !password) {
         return res.status(404).send({status: 'error', error: 'Valores incompletos.'});
@@ -45,7 +55,7 @@ router.post('/login', async (req, res) => {
     }
     req.session.user = user;
     res.send({status:'Success', payload:user});
-});
+}); */
 
 router.post('/resetPassword', async (req, res) => {
     const { email, password} = req.body;
