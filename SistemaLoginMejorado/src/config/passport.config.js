@@ -19,7 +19,7 @@ const initPassport =() =>
     passport.use('github', new githubService({
         clientID: "Iv1.40ec8ba414efaa03",
         clientSecret: "597288a2f3db38fedb9859869766a574f7c73b48",
-        callbackURL: "http://localhost:8080/api/session/github"
+        callbackURL: "http://localhost:8080/api/session/githubcallback"
     }, async (accessToken,refreshToken,profile, done)=>
     { try{
 
@@ -38,7 +38,8 @@ const initPassport =() =>
             let result = await  userModel.create(newUser);
             done(null,result)
         }else{
-            done(null,user)
+             console.log(user);
+            done(null,user)   
         }
     }catch(error){
         return done(error)

@@ -35,7 +35,22 @@ app.use(express.static(`${__dirname}/public`));
     useUnifiedTopology:true,
 }) */
 
+
+
+
+initPassport();
 app.use(session({
+    secret:"SecretCoders",
+    resave: false , 
+  saveUninitialized: true
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use('/',viewRouter);
+app.use('/api/products', productsRouter);
+app.use('/api/carts', cartsRouter);
+app.use('/api/session', sessionsRouter);
+/* app.use(session({
     store : MongoStore.create({
         mongoUrl: MONGODB_URI,
         mongoOptions: {useNewUrlParser: true, useUnifiedTopology: true},
@@ -45,16 +60,4 @@ app.use(session({
     resave: false, 
     saveUninitialized: false,
     cookie: { sameSite: 'strict' }
-}));
-
-
-initPassport();
-app.use(session({
-    secret:"SecretCoders"
-}));
-
-app.use(passport.initialize());
-app.use('/',viewRouter);
-app.use('/api/products', productsRouter);
-app.use('/api/carts', cartsRouter);
-app.use('/api/session', sessionsRouter);
+})); */
