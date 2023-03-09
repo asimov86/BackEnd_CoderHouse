@@ -34,6 +34,7 @@
         </tr>
         {{#each products}}
         <tr>
+          {{!-- Hace falta agregar el id del carrito en la var buyer (comprador). Que relaciona al usuario con el carrito.--}}
             <td>{{this.title}}</td>
             <td>${{this.price}}</td>
             <td><img width="100" src={{this.thumbnail}} alt="not found"></td>
@@ -42,6 +43,8 @@
         {{/each}}
     </table>
 </div>
+
+
 {{!-- <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
         {{#if hasPrevPage}}
         <a href="/products?query={{customQuery}}&page={{prevPage}}&limit={{limitValue}}&sort={{sort}}"><button class="btn-group me-2" role="group" aria-label="First group">Anterior</button></a>
